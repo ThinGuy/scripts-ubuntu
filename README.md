@@ -2,7 +2,7 @@
 A set of scripts that make my life easier.
 
 ### functions.sh
-* Bash Functions used by most of the scripts
+* Bash functions used by most of the scripts
 
 ### LXDNetConf.sh
 * Script to set LXD Networking preferences so you don't have to run dpkg-reconfigure
