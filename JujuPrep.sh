@@ -199,12 +199,11 @@ clear
 		service lxd restart;QStatusChk
 		printf "${BW} ┗━Create ${BO}LXD${BW} Container: ${BC}${LXD_CONT_NAME} ${BW} for ${BO}Juju${BW} Controller${RT}\n"
 		printf "${RO} ┗━━ This may take a few minutes as LXD must download an OS image for Ubuntu Xenial"
-		SpinnerProg=$(juju bootstrap ${LXD_CONT_NAME} lxd) &
+		SpinnerProg=$(su $SUDO_USER -c "juju bootstrap ${LXD_CONT_NAME} lxd &> /var/log/juju.bootstrap.$$.log") &
 		pid=$!
 		trap "kill $pid 2>/dev/null" EXIT
 		sleep .5
 		while kill -0 $pid 2>/dev/null;do
-			#FileSize=$(du -sh "${USXMEDIA_ISO_ROOT}/HSMGR/HSMGR.TGZ" 2>/dev/null| awk '{print $1}')
 			Spinner "┗━ Creating LXD Container: ${LXD_CONT_NAME}  "
 			printf '                                                  '
 		done
@@ -270,15 +269,14 @@ clear
 		[[ -z $AWS_ACCESS_KEY_ID ]] && printf "\t\taccess-key: ${ACCESS_KEY}" >> ~/.juju/environments.yaml;QStatusChk
 		[[ -z $AWS_SECRET_ACCESS_KEY ]] && printf "${BW}┗━ Changing ${BC}secret-key${GR} to ${BW}${SECRET_KEY} ${RT}"
 		[[ -z $AWS_SECRET_ACCESS_KEY ]] && printf "\t\tsecret-key: ${SECRET_KEY}" >> ~/.juju/environments.yaml;QStatusChk
-		
+		chown $USER:$USER ~/.juju/environments.yaml
 		printf "\n\n${RCW}  Canonical Juju is ready for bootstrapping  ${RT}\n"
 		printf "${BW}┗━ Bootstrapping ${BO}Juju Environment: ${BW}${ENV_NAME} ${RT}"
-		SpinnerProg=$(juju bootstrap) &
+		SpinnerProg=$(su $SUDO_USER -c "juju bootstrap &> /var/log/juju.bootstrap.$$.log") &
 		pid=$!
 		trap "kill $pid 2>/dev/null" EXIT
 		sleep .5
 		while kill -0 $pid 2>/dev/null;do
-			#FileSize=$(du -sh "${USXMEDIA_ISO_ROOT}/HSMGR/HSMGR.TGZ" 2>/dev/null| awk '{print $1}')
 			Spinner "┗━━ Bootstrapping Juju Environment: ${ENV_NAME}      "
 		done
 		wait $pid
