@@ -142,7 +142,7 @@ done
 printf "${BW}┗━ Detected VirtualBox Guest Additions ISO on $(readlink -f /dev/disk/by-label/VBOX*)${RT}\n"
 printf "${BW}┗━ Mounting VirtualBox Guest Additions ISO...${RT}"
 mount -t iso9660 -o ro /dev/cdrom /media/cdrom;QStatusChk
-[[ $? -eq 0 ]] || { printf "\n\e[1;31mFailed to mount VirtualBox Guest Additions ISO.\e[0m \e[1;37mExiting...\e[0m\n\n"; exit 1; }
+[[ -z $(mount |grep 'on /media/cdrom') ]] || { printf "\n\e[1;31mFailed to mount VirtualBox Guest Additions ISO.\e[0m \e[1;37mExiting...\e[0m\n\n"; exit 1; }
 printf "${BW}┗━ Installing additional software to assist with building guest additions...${RT}\n"
 SpinnerProg=$(apt-get install -y -q dkms build-essential linux-headers-generic linux-headers-$(uname -r)) &
 pid=$!
