@@ -89,26 +89,26 @@ Spinner() {
 case $toggle
   in
     1)
-      echo -ne '\e[0m\t'"$1"'\e['$(($MYCOLUMNS-42))'G\e[1;37m| \r'
+      echo -ne '\e[0m\t'"$1"'\e['$(($MYCOLUMNS-62))'G\e[1;37m| \r'
       toggle="2"
     ;;
 
     2)
-      echo -ne '\e[0m\t'"$1"'\e['$(($MYCOLUMNS-42))'G\e[1;37m/ \r'
+      echo -ne '\e[0m\t'"$1"'\e['$(($MYCOLUMNS-62))'G\e[1;37m/ \r'
       toggle="3"
     ;;
 
     3)
-      echo -ne '\e[0m\t'"$1"'\e['$(($MYCOLUMNS-42))'G\e[1;37m- \r'
+      echo -ne '\e[0m\t'"$1"'\e['$(($MYCOLUMNS-62))'G\e[1;37m- \r'
       toggle="4"
     ;;
 
     4)
-      echo -ne '\e[0m\t'"$1"'\e['$(($MYCOLUMNS-42))'G\e[1;37m\ \r'
+      echo -ne '\e[0m\t'"$1"'\e['$(($MYCOLUMNS-62))'G\e[1;37m\ \r'
       toggle="5"
     ;;
     *)
-      echo -ne '\e[0m\t'"$1"'\e['$(($MYCOLUMNS-42))'G\e[1;37m| \r'
+      echo -ne '\e[0m\t'"$1"'\e['$(($MYCOLUMNS-62))'G\e[1;37m| \r'
       toggle="1"
     ;;
 esac
@@ -124,16 +124,16 @@ SCRIPTstart=$(date +"%s")
 clear
 {
 	WelcomeMsg "${BO}  Preparing Ubuntu for Juju Demo  ${RT}"
-
+	printf "\n"
 	#Check for AWS instanace
 	export LOCAL_HOSTNAME=$(hostname -d)
 	if [[ ${LOCAL_HOSTNAME} =~ .*\.amazonaws\.com ]] || [[ ${LOCAL_HOSTNAME} =~ ec2\.internal ]];then
-	        printf "${BCW}  This is an EC2 instance  ${RT}\n"
+	        printf "${RCW}  This is an EC2 instance  ${RT}\n"
 	        export AWS_INSTANCE="$TRUE"
 	        printf "${BW}┗━ Installing Python...${RT}"
 	        apt-get install -y -q python-software-properties >> $LOGFILE;QStatusChk
 	else
-	        printf "${BCW}  This does not appear to be an EC2 instance  ${RT}\n"
+	        printf "${RCW}  This does not appear to be an EC2 instance  ${RT}\n"
 	        export AWS_INSTANCE="$FALSE"
 	        printf "${BW}┗━ Installing OpenSSH and Python...${RT}"
 	        apt-get install -y -q openssh-server python-software-properties >> $LOGFILE;QStatusChk
@@ -146,9 +146,10 @@ clear
 	
 	if [[ $TRUSTY = "$TRUE" ]];then
 		export JUJU_VER="1.25"
-		printf "${RCW}Ubuntu 14.04 LTS (Trusty) Detected.${RT}\n"
+		printf "\n${RCW}Ubuntu 14.04 LTS (Trusty) Detected.${RT}\n"
+		printf "${BW}┗━ Installing Juju ${JUJU_VER} ${RT}\n"
 		printf "${BW}┗━ Adding Personal Package Archive: juju/stable...${RT}"
-		add-apt-repository ppa:juju/stable -y;QStatusChk
+		add-apt-repository ppa:juju/stable -y >> $LOGFILE;QStatusChk
 		printf "${BW}┗━ Updating Available Packages...${RT}"
 		apt-get update -y >> $LOGFILE;QStatusChk
 		printf "${BW}┗━ Installing ${BO}Juju ${JUJU_VER}${BW} Core and QuickStart...${RT}"
@@ -156,14 +157,15 @@ clear
 
 
 	elif [[ $XENIAL = "$TRUE" ]];then
+		set -x
 		export JUJU_VER="2.0"
-		printf "${RCW}Ubuntu 16.04 LTS (Xenial) Detected.${RT}\n"
+		printf "\n${RCW}Ubuntu 16.04 LTS (Xenial) Detected.${RT}\n"
 		printf "${BW}┗━ Installing Juju ${JUJU_VER} ${RT}\n"
 		printf "${BW}┗━ Adding Personal Package Archive: juju/devel...${RT}"
 		add-apt-repository ppa:juju/devel -y >> $LOGFILE;QStatusChk
 		printf "${BW}┗━ Updating Available Packages...${RT}"
 		apt-get update -y >> $LOGFILE;QStatusChk
-		[[ `$(apt-cache policy lxd|grep -qoi "installed: (none)")|echo $?` = 0 ]] && export LXD_INSTALLED="$FALSE" || LXD_INSTALLED="$TRUE"		printf "${BW}┗━ Installing ${BO}Juju ${JUJU_VER}${BW}, ZFS Utils, and ${BO}LXD${BW}...${RT}"
+		[[ `$(apt-cache policy lxd|grep -qoi "installed: (none)")|echo $?` = 0 ]] && export LXD_INSTALLED="$FALSE" || export LXD_INSTALLED="$TRUE"		printf "${BW}┗━ Installing ${BO}Juju ${JUJU_VER}${BW}, ZFS Utils, and ${BO}LXD${BW}...${RT}"
 		apt-get install -y -q juju zfsutils-linux lxd >> $LOGFILE;QStatusChk
 		GRP_CHK=$(getent group lxd;echo $?)
 		[[ $GRP_CHK -eq 0 ]] && { printf "${BW}┗━ Creating group \"${BO}lxd${BW}\"${RT}"; newgrp lxd; }
@@ -193,24 +195,28 @@ clear
 		printf 'LXD_IPV6_MASK=\"\"\n' >> /etc/default/lxd-bridge
 		printf 'LXD_IPV6_NETWORK=\"\"\n' >> /etc/default/lxd-bridge
 		printf 'LXD_IPV6_NAT=\"false\"\n' >> /etc/default/lxd-bridge
-		printf 'LXD_IPV6_PROXY=\"false\"\n' >> /etc/default/lxd-bridge		printf "${BW} ┗━Stopping ${BO}LXD Bridge: ${BC}${LXD_BRIDGE} ${BW} for ${BO}Juju${BW} Controller...${RT}"
+		printf 'LXD_IPV6_PROXY=\"false\"\n' >> /etc/default/lxd-bridge		
+		printf "${BW} ┗━Stopping ${BO}LXD Bridge: ${BC}${LXD_BRIDGE} ${BW} for ${BO}Juju${BW} Controller...${RT}"
 		service lxd-bridge stop;QStatusChk
 		printf "${BW} ┗━Restarting ${BO}LXD Service: ${BC}${LXD_BRIDGE} ${BW} for ${BO}Juju${BW} Controller...${RT}"
 		service lxd restart;QStatusChk
 		printf "${BW} ┗━Create ${BO}LXD${BW} Container: ${BC}${LXD_CONT_NAME} ${BW} for ${BO}Juju${BW} Controller${RT}\n"
 		printf "${RO} ┗━━ This may take a few minutes as LXD must download an OS image for Ubuntu Xenial"
-		SpinnerProg=$(su $SUDO_USER -c "juju bootstrap ${LXD_CONT_NAME} lxd &> /var/log/juju.bootstrap.$$.log") &
+		SpinnerProg=$(su $USER -c "juju bootstrap ${LXD_CONT_NAME} lxd &> /var/log/juju.bootstrap.$$.log") &
 		pid=$!
 		trap "kill $pid 2>/dev/null" EXIT
 		sleep .5
+		setterm --cursor off
 		while kill -0 $pid 2>/dev/null;do
-			Spinner "┗━ Creating LXD Container: ${LXD_CONT_NAME}  "
 			printf '                                                  '
+			Spinner "┗━ Bootstrapping Juju: ${LXD_CONT_NAME}  "
+
 		done
 		wait $pid
 		SpinnerResult=$?
 		trap - EXIT
 		if [[ $SpinnerResult -eq 0 ]];then true;QStatusChk;else false;QStatusChk;fi
+		setterm --cursor on
 	fi
 	
 	#Generate EC2 environments.yaml
@@ -276,13 +282,16 @@ clear
 		pid=$!
 		trap "kill $pid 2>/dev/null" EXIT
 		sleep .5
+		setterm --cursor off
 		while kill -0 $pid 2>/dev/null;do
+			printf '                                                  '
 			Spinner "┗━━ Bootstrapping Juju Environment: ${ENV_NAME}      "
 		done
 		wait $pid
 		SpinnerResult=$?
 		trap - EXIT
 		if [[ $SpinnerResult -eq 0 ]];then true;QStatusChk;else false;QStatusChk;fi
+		setterm --cursor on
 	fi
 	
 	
