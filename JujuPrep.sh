@@ -201,7 +201,7 @@ clear
 		printf "${BW} ┗━Restarting ${BO}LXD Service: ${BC}${LXD_BRIDGE} ${BW} for ${BO}Juju${BW} Controller...${RT}"
 		service lxd restart;QStatusChk
 		printf "${BW} ┗━Create ${BO}LXD${BW} Container: ${BC}${LXD_CONT_NAME} ${BW} for ${BO}Juju${BW} Controller${RT}\n"
-		printf "${RO} ┗━━ This may take a few minutes as LXD must download an OS image for Ubuntu Xenial"
+		printf "${RO} ┗━━ This may take a few minutes as LXD must download an OS image for Ubuntu Xenial${RT}\n""
 		SpinnerProg=$(su $USER -c "juju bootstrap ${LXD_CONT_NAME} lxd &> /var/log/juju.bootstrap.$$.log") &
 		pid=$!
 		trap "kill $pid 2>/dev/null" EXIT
@@ -217,6 +217,15 @@ clear
 		trap - EXIT
 		if [[ $SpinnerResult -eq 0 ]];then true;QStatusChk;else false;QStatusChk;fi
 		setterm --cursor on
+		printf "\n${ROW}  List Juju Controllers  ${RT}\n"
+		su $USER -c "juju list-controllers"
+		printf "\n${RCW}  Show ZFS Pool Infomation  ${RT}\n"
+		zpool iostat -v;sleep 2
+		printf "\n${ROW}  Show juju Contoller & Model  ${RT}\n"
+		su $USER -c "juju switch"
+		
+		set +x
+		
 	fi
 	
 	#Generate EC2 environments.yaml
@@ -278,7 +287,7 @@ clear
 		chown $USER:$USER ~/.juju/environments.yaml
 		printf "\n\n${RCW}  Canonical Juju is ready for bootstrapping  ${RT}\n"
 		printf "${BW}┗━ Bootstrapping ${BO}Juju Environment: ${BW}${ENV_NAME} ${RT}"
-		SpinnerProg=$(su $SUDO_USER -c "juju bootstrap &> /var/log/juju.bootstrap.$$.log") &
+		SpinnerProg=$(su $USER -c "juju bootstrap &> /var/log/juju.bootstrap.$$.log") &
 		pid=$!
 		trap "kill $pid 2>/dev/null" EXIT
 		sleep .5
@@ -302,6 +311,7 @@ clear
 	SCRIPTtime=$(($SCRIPTend-$SCRIPTstart))
 	printf "\n\n${ROW}  Juju $JUJU_VER preparation complete  ${RT}\n"
 	printf "${RO}┗━ Juju preparation took $(($SCRIPTtime / 60)) min(s) $(($SCRIPTtime % 60)) secs. to complete.${RT}\n\n"
+	printf "\n\n${RGW}  You may now deploy Charms  ${RT}\n\n"
 } 2> ${LOGFILE}
 
 
