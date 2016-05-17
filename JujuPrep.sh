@@ -218,10 +218,10 @@ clear
 	
 	
 	
-	SCRIPTend=$(date +"%s")
-	SCRIPTtime=$(($SCRIPTend-$SCRIPTstart))
+	#SCRIPTend=$(date +"%s")
+	#SCRIPTtime=$(($SCRIPTend-$SCRIPTstart))
 	printf "\n\n${ROW}  Juju $JUJU_VER preparation complete  ${RT}\n"
-	printf "${RO}┗━ Juju preparation took $(($SCRIPTtime / 60)) min(s) $(($SCRIPTtime % 60)) secs. to complete.${RT}\n\n"
+	##printf "${RO}┗━ Juju preparation took $(($SCRIPTtime / 60)) min(s) $(($SCRIPTtime % 60)) secs. to complete.${RT}\n\n"
 	printf "\n\n${RGW}  You may now deploy Charms  ${RT}\n\n"
 
 
