@@ -113,7 +113,7 @@ clear
 		service lxd restart;QStatusChk
 		printf "${BW} ┗━Create ${BO}LXD${BW} Container: ${BC}${LXD_CONT_NAME} ${BW} for ${BO}Juju${BW} Controller${RT}\n"
 		printf "${RO} ┗━━ This may take a few minutes as LXD must download an OS image for Ubuntu Xenial${RT}\n""
-		SpinnerProg=`su $USER -c juju bootstrap ${LXD_CONT_NAME} lxd &> /var/log/juju.bootstrap.$$.log` &
+		SpinnerProg=$(juju bootstrap ${LXD_CONT_NAME} lxd &> /var/log/juju.bootstrap.$$.log) &
 		pid=$!
 		trap "kill $pid 2>/dev/null" EXIT
 		sleep .5
@@ -198,7 +198,7 @@ clear
 		chown $USER:$USER ~/.juju/environments.yaml
 		printf "\n\n${RCW}  Canonical Juju is ready for bootstrapping  ${RT}\n"
 		printf "${BW}┗━ Bootstrapping ${BO}Juju Environment: ${BW}${ENV_NAME} ${RT}"
-		SpinnerProg=`su $USER -c "juju bootstrap &> /var/log/juju.bootstrap.$$.log"` &
+		SpinnerProg=$(juju bootstrap &> /var/log/juju.bootstrap.$$.log) &
 		pid=$!
 		trap "kill $pid 2>/dev/null" EXIT
 		sleep .5
