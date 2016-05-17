@@ -155,8 +155,9 @@ clear
 		printf "${BW}┗━ Installing ${BO}Juju ${JUJU_VER}${BW} Core and QuickStart...${RT}"
 		apt-get install -y -q juju-core juju-quickstart >> $LOGFILE;QStatusChk
 
-
-	elif [[ $XENIAL = "$TRUE" ]];then
+	fi
+	
+	if [[ $XENIAL = "$TRUE" ]];then
 		set -x
 		export JUJU_VER="2.0"
 		printf "\n${RCW}Ubuntu 16.04 LTS (Xenial) Detected.${RT}\n"
