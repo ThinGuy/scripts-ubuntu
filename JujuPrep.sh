@@ -225,7 +225,7 @@ clear
 		printf "${ROW} Configuring environments.yaml for AWS ${RT}\n\n"
 		printf "${BC}┗━ Enter Environment Name : ${GR}[ ${BW}amazon${GR}] ${BW}"
 		read ENV_NAME
-		[[ -z $ENV_NAME ]] && export ENV_NAME="AWS_JUJU_DEMO" && printf "${BY}┗━ Defaulting to ${BW} amazon ${BY} environment type${RT}\n";sleep 2
+		[[ -z $ENV_NAME ]] && export ENV_NAME="amazon" && printf "${BY}┗━ Defaulting to ${BW} amazon ${BY} environment type${RT}\n";sleep 2
 		printf "${BC}┗━ Enter Environment Type : ${GR}[ ${BW}ec2 ${GR}] ${BW}"
 		read ENV_TYPE
 		[[ -z $ENV_TYPE ]] && export ENV_TYPE="ec2" && printf "${BY}┗━ Defaulting to ${BW} ec2 ${BY} environment type${RT}\n";sleep 2
