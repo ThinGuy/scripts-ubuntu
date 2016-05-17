@@ -68,7 +68,7 @@ clear
 	fi
 	
 	if [[ $XENIAL = "$TRUE" ]];then
-		set -x
+
 		export JUJU_VER="2.0"
 		printf "\n${RCW}Ubuntu 16.04 LTS (Xenial) Detected.${RT}\n"
 		printf "${BW}┗━ Installing Juju ${JUJU_VER} ${RT}\n"
@@ -113,7 +113,7 @@ clear
 		service lxd restart;QStatusChk
 		printf "${BW} ┗━Create ${BO}LXD${BW} Container: ${BC}${LXD_CONT_NAME} ${BW} for ${BO}Juju${BW} Controller${RT}\n"
 		printf "${RO} ┗━━ This may take a few minutes as LXD must download an OS image for Ubuntu Xenial${RT}\n""
-		SpinnerProg=$(su $USER -c "juju bootstrap ${LXD_CONT_NAME} lxd &> /var/log/juju.bootstrap.$$.log") &
+		SpinnerProg=`su $USER -c juju bootstrap ${LXD_CONT_NAME} lxd &> /var/log/juju.bootstrap.$$.log` &
 		pid=$!
 		trap "kill $pid 2>/dev/null" EXIT
 		sleep .5
@@ -135,7 +135,7 @@ clear
 		printf "\n${ROW}  Show juju Contoller & Model  ${RT}\n"
 		su $USER -c "juju switch"
 		
-		set +x
+
 		
 	fi
 	
@@ -198,7 +198,7 @@ clear
 		chown $USER:$USER ~/.juju/environments.yaml
 		printf "\n\n${RCW}  Canonical Juju is ready for bootstrapping  ${RT}\n"
 		printf "${BW}┗━ Bootstrapping ${BO}Juju Environment: ${BW}${ENV_NAME} ${RT}"
-		SpinnerProg=$(su $USER -c "juju bootstrap &> /var/log/juju.bootstrap.$$.log") &
+		SpinnerProg=`su $USER -c "juju bootstrap &> /var/log/juju.bootstrap.$$.log"` &
 		pid=$!
 		trap "kill $pid 2>/dev/null" EXIT
 		sleep .5
