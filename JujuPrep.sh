@@ -262,7 +262,7 @@ clear
 		printf "${BW}┗━ Addomg ${BO}Environments Stanza${GR} to ${BW}environments.yaml ${RT}"
 		printf "environments:\n" >> ~/.juju/environments.yaml;QStatusChk
 		printf "${BW}┗━ Changing ${BO}Environment Name${GR} to ${BW}${ENV_NAME} ${RT}"
-		printf "${ENV_NAME}\n" >> ~/.juju/environments.yaml;QStatusChk
+		printf "${ENV_NAME}:\n" >> ~/.juju/environments.yaml;QStatusChk
 		printf "${BW}┗━ Changing ${BO}Environment Type${GR} to ${BW}${ENV_TYPE} ${RT}"
 		printf "type: ${ENV_TYPE}\n" >> ~/.juju/environments.yaml;QStatusChk
 		[[ -z $AWS_ACCESS_KEY_ID ]] && printf "${BW}┗━ Changing ${BC}access-key:${GR} to ${BW}${ACCESS_KEY} ${RT}"
