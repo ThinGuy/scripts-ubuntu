@@ -23,9 +23,9 @@ export FALSE=false
 shopt -s dotglob
 export IFS=$' \t\n'
 export LOGDIR=/var/log
-export LOGFILE="${LOGDIR}/PrepServer.$$.log"
+export LOGFILE="${LOGDIR}/JujuPrep.$$.log"
 [[ -f $LOGFILE ]] || touch $LOGFILE 
-
+set -x
 #Colors
 ROW='\e[1;48;5;202m'
 RYW='\e[1;5;43;37m'
@@ -82,7 +82,7 @@ local RETVAL=$?
 WelcomeMsg() {
 themsg="${1}"
 echo;for i in $(seq 232 256);do printf "\e[38;5;${i}m#\e[0m";done;printf "${themsg}";for i in $(seq 256 -1 232);do printf "\e[38;5;${i}m#\e[0m";done;echo
-}
+
 
 Spinner() {
 
@@ -122,7 +122,7 @@ SCRIPTstart=$(date +"%s")
 
 
 clear
-{
+
 	WelcomeMsg "${BO}  Preparing Ubuntu for Juju Demo  ${RT}"
 	printf "\n"
 	#Check for AWS instanace
@@ -313,6 +313,6 @@ clear
 	printf "\n\n${ROW}  Juju $JUJU_VER preparation complete  ${RT}\n"
 	printf "${RO}┗━ Juju preparation took $(($SCRIPTtime / 60)) min(s) $(($SCRIPTtime % 60)) secs. to complete.${RT}\n\n"
 	printf "\n\n${RGW}  You may now deploy Charms  ${RT}\n\n"
-} 2> ${LOGFILE}
+
 
 
