@@ -82,7 +82,7 @@ local RETVAL=$?
 WelcomeMsg() {
 themsg="${1}"
 echo;for i in $(seq 232 256);do printf "\e[38;5;${i}m#\e[0m";done;printf "${themsg}";for i in $(seq 256 -1 232);do printf "\e[38;5;${i}m#\e[0m";done;echo
-
+}
 
 Spinner() {
 
