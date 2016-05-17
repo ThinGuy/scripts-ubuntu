@@ -123,7 +123,7 @@ SCRIPTstart=$(date +"%s")
 
 clear
 
-	WelcomeMsg "${BO}  Preparing Ubuntu for Juju Demo  ${RT}"
+	#WelcomeMsg "${BO}  Preparing Ubuntu for Juju Demo  ${RT}"
 	printf "\n"
 	#Check for AWS instanace
 	export LOCAL_HOSTNAME=$(hostname -d)
