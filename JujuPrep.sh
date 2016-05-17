@@ -266,9 +266,9 @@ clear
 		printf "${BW}┗━ Changing ${BO}Environment Type${GR} to ${BW}${ENV_TYPE} ${RT}"
 		printf "\t\ttype: ${ENV_TYPE}\n" >> ~/.juju/environments.yaml;QStatusChk
 		[[ -z $AWS_ACCESS_KEY_ID ]] && printf "${BW}┗━ Changing ${BC}access-key:${GR} to ${BW}${ACCESS_KEY} ${RT}"
-		[[ -z $AWS_ACCESS_KEY_ID ]] && printf "\t\taccess-key: ${ACCESS_KEY}" >> ~/.juju/environments.yaml;QStatusChk
+		[[ -z $AWS_ACCESS_KEY_ID ]] && printf "\t\taccess-key: ${ACCESS_KEY}\n" >> ~/.juju/environments.yaml;QStatusChk
 		[[ -z $AWS_SECRET_ACCESS_KEY ]] && printf "${BW}┗━ Changing ${BC}secret-key${GR} to ${BW}${SECRET_KEY} ${RT}"
-		[[ -z $AWS_SECRET_ACCESS_KEY ]] && printf "\t\tsecret-key: ${SECRET_KEY}" >> ~/.juju/environments.yaml;QStatusChk
+		[[ -z $AWS_SECRET_ACCESS_KEY ]] && printf "\t\tsecret-key: ${SECRET_KEY}\n" >> ~/.juju/environments.yaml;QStatusChk
 		chown $USER:$USER ~/.juju/environments.yaml
 		printf "\n\n${RCW}  Canonical Juju is ready for bootstrapping  ${RT}\n"
 		printf "${BW}┗━ Bootstrapping ${BO}Juju Environment: ${BW}${ENV_NAME} ${RT}"
