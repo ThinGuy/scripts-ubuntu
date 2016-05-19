@@ -163,7 +163,8 @@ clear
 		add-apt-repository ppa:juju/devel -y >> $LOGFILE;QStatusChk
 		printf "${BW}┗━ Updating Available Packages...${RT}"
 		apt-get update -y >> $LOGFILE;QStatusChk
-		[[ `$(apt-cache policy lxd|grep -qoi "installed: (none)")|echo $?` = 0 ]] && export LXD_INSTALLED="$FALSE" || LXD_INSTALLED="$TRUE"		printf "${BW}┗━ Installing ${BO}Juju ${JUJU_VER}${BW}, ZFS Utils, and ${BO}LXD${BW}...${RT}"
+		[[ `$(apt-cache policy lxd|grep -qoi "installed: (none)")|echo $?` = 0 ]] && export LXD_INSTALLED="$FALSE" || LXD_INSTALLED="$TRUE"
+		printf "${BW}┗━ Installing ${BO}Juju ${JUJU_VER}${BW}, ZFS Utils, and ${BO}LXD${BW}...${RT}"
 		apt-get install -y -q juju zfsutils-linux lxd >> $LOGFILE;QStatusChk
 		GRP_CHK=$(getent group lxd;echo $?)
 		[[ $GRP_CHK -eq 0 ]] && { printf "${BW}┗━ Creating group \"${BO}lxd${BW}\"${RT}"; newgrp lxd; }
@@ -193,7 +194,8 @@ clear
 		printf 'LXD_IPV6_MASK=\"\"\n' >> /etc/default/lxd-bridge
 		printf 'LXD_IPV6_NETWORK=\"\"\n' >> /etc/default/lxd-bridge
 		printf 'LXD_IPV6_NAT=\"false\"\n' >> /etc/default/lxd-bridge
-		printf 'LXD_IPV6_PROXY=\"false\"\n' >> /etc/default/lxd-bridge		printf "${BW} ┗━Stopping ${BO}LXD Bridge: ${BC}${LXD_BRIDGE} ${BW} for ${BO}Juju${BW} Controller...${RT}"
+		printf 'LXD_IPV6_PROXY=\"false\"\n' >> /etc/default/lxd-bridge		
+		printf "${BW} ┗━Stopping ${BO}LXD Bridge: ${BC}${LXD_BRIDGE} ${BW} for ${BO}Juju${BW} Controller...${RT}"
 		service lxd-bridge stop;QStatusChk
 		printf "${BW} ┗━Restarting ${BO}LXD Service: ${BC}${LXD_BRIDGE} ${BW} for ${BO}Juju${BW} Controller...${RT}"
 		service lxd restart;QStatusChk
