@@ -30,6 +30,8 @@ install_addon () {
 
 #Install PipleLight
 clear
+printf “Pre-accepting MS Font EULA…\n\n”
+echo ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true | sudo debconf-set-selections
 printf “Installing pipelight…\n\n”
 sudo add-apt-repository -y ppa:pipelight/stable
 sudo apt-get update
