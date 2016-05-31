@@ -30,27 +30,27 @@ install_addon () {
 
 #Install PipleLight
 clear
-printf “Pre-accepting MS Font EULA…\n\n”
+printf "\nPre-accepting MS Font EULA\n\n"
 echo ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true | sudo debconf-set-selections
-printf “Installing pipelight…\n\n”
+printf "Installing pipelight…\n\n"
 sudo add-apt-repository -y ppa:pipelight/stable
 sudo apt-get update
 sudo apt-get install -y --install-recommends pipelight-multi
-sudo pipelight-plugin --update
-sudo pipelight-plugin --enable flash
-sudo pipelight-plugin --enable widevine
-sudo pipelight-plugin --enable silverlight
-sudo pipelight-plugin --unlock x64-flash
-sudo pipelight-plugin --enable x64-flash
-sudo pipelight-plugin --unlock shockwave
-sudo pipelight-plugin --enable shockwave
-sudo pipelight-plugin --update
+echo y|pipelight-plugin --update
+echo y|pipelight-plugin --enable flash
+echo y|pipelight-plugin --enable widevine
+echo y|pipelight-plugin --enable silverlight
+pipelight-plugin --unlock x64-flash
+pipelight-plugin --enable x64-flash
+pipelight-plugin --unlock shockwave
+pipelight-plugin --enable shockwave
+pipelight-plugin --update
 sudo apt-get upgrade -y
-printf “ Installing User Agent Overrider Plugin…\n\n”
+printf "Installing User Agent Overrider Plugin…\n\n"
 mkdir -p $HOME/tmp_ext;$HOME/tmp_ext
 wget https://addons.mozilla.org/firefox/downloads/latest/429678/addon-429678-latest.xpi
-Install_addon addon-429678-latest.xpi “$EXT_USER”
+Install_addon addon-429678-latest.xpi "$EXT_USER"
 rm -rf $HOME/tmp_ext;
-printf “Launching Firefox…\n\n\tPlease be patient during Wine and Pipelight configuration…\n”
+printf "Launching Firefox…\n\n\tPlease be patient during Wine and Pipelight configuration…\n"
 firefox &
 
